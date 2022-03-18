@@ -16,8 +16,7 @@ class PostController {
             const post = await Post.create({ author, title, content, picture });
             return res.json(post);
         } catch (error) {
-            error.message = "Одно из полей не заполнено";
-            return res.status(500).json(error);
+            return res.status(400).json(error);
         }
     }
 
