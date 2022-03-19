@@ -1,9 +1,9 @@
-import Post from "./postModel.js";
+import PostService from "./postService.js";
 
 class PostController {
     async getAll(req, res) {
         try {
-            const posts = await Post.find();
+            const posts = await PostService.getAll();
             return res.json(posts);
         } catch (error) {
             return res.status(500).json(error);
@@ -13,7 +13,12 @@ class PostController {
     async create(req, res) {
         try {
             const { author, title, content, picture } = req.body;
-            const post = await Post.create({ author, title, content, picture });
+            const post = await PostService.create({
+                author,
+                title,
+                content,
+                picture,
+            });
             return res.json(post);
         } catch (error) {
             return res.status(400).json(error);
@@ -22,7 +27,7 @@ class PostController {
 
     async getOne(req, res) {
         try {
-            const post = await Post.findById(req.params.id);
+            const post = await PostService.getOne(req.params.id);
             return res.json(post);
         } catch (error) {
             return res.status(400).json(error);
@@ -31,17 +36,17 @@ class PostController {
 
     async update(req, res) {
         try {
-            const post = req.body;
+            const updateData = req.body;
 
-            for (const key of Object.keys(post)) {
+            for (const key of Object.keys(updateData)) {
                 if (key !== "author" && key !== "title" && key !== "content") {
                     return res.status(400).json("Неверное поле");
                 }
             }
 
-            const updatedPost = await Post.findByIdAndUpdate(
+            const updatedPost = await PostService.update(
                 req.params.id,
-                post,
+                updateData,
                 { new: true }
             );
             return res.json(updatedPost);
@@ -52,8 +57,7 @@ class PostController {
 
     async delete(req, res) {
         try {
-            console.log(req.body);
-            const deletedPost = await Post.findByIdAndDelete(req.params.id);
+            const deletedPost = await PostService.delete(req.params.id);
             return res.json(deletedPost);
         } catch (error) {
             return res.status(500).json(error);
