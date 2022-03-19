@@ -5,7 +5,7 @@ class PostService {
         return await Post.find();
     }
 
-    async create(post) {
+    async create(post, file) {
         return await Post.create(post);
     }
 

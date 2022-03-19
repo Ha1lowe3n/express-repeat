@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
 app.use(express.json());
+app.use(express.static("uploads"));
 app.use("/api/", postRouter);
 
 app.listen(PORT, console.log(`Server running on port ${PORT}`));

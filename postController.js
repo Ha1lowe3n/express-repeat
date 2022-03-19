@@ -12,13 +12,8 @@ class PostController {
 
     async create(req, res) {
         try {
-            const { author, title, content, picture } = req.body;
-            const post = await PostService.create({
-                author,
-                title,
-                content,
-                picture,
-            });
+            console.log(req.file);
+            const post = await PostService.create(req.body, req.file);
             return res.json(post);
         } catch (error) {
             return res.status(400).json(error);
